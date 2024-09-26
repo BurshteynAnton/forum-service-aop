@@ -6,29 +6,39 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.springframework.data.mongodb.core.mapping.Document;
-
+import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
+@Setter
 @EqualsAndHashCode(of = "id")
 @NoArgsConstructor
-@Document(collection = "posts")
+@Entity
+@Table(name = "posts")
 public class Post {
-	String id;
-	@Setter
-	String title;
-	@Setter
-	String content;
-	@Setter
-	String author;
-	LocalDateTime dateCreated = LocalDateTime.now();
-	Set<String> tags = new HashSet<>();
-	int likes;
-	List<Comment> comments = new ArrayList<>();
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.UUID)
+	private String id; // Идентификатор поста с автоматической генерацией UUID
+
+	private String title;
+	private String content;
+	private String author;
+	private LocalDateTime dateCreated = LocalDateTime.now();
+
+	@ElementCollection(fetch = FetchType.EAGER)
+	@CollectionTable(name = "post_tags", joinColumns = @JoinColumn(name = "post_id"))
+	@Column(name = "tag")
+	private Set<String> tags = new HashSet<>();
+
+	private int likes;
+
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	@JoinColumn(name = "post_id")
+	private List<Comment> comments = new ArrayList<>();
 
 	public Post(String title, String content, String author, Set<String> tags) {
 		this.title = title;
@@ -56,5 +66,4 @@ public class Post {
 	public boolean removeComment(Comment comment) {
 		return comments.remove(comment);
 	}
-
 }

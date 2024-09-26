@@ -85,17 +85,15 @@ public class UserAccountServiceImpl implements UserAccountService, CommandLineRu
 		userAccountRepository.save(userAccount);
 
 	}
-	
+
 	@Override
 	public void run(String... args) throws Exception {
 		if (!userAccountRepository.existsById("admin")) {
 			String password = passwordEncoder.encode("admin");
-			UserAccount userAccount = new UserAccount("admin", "", "", password );
-			userAccount.addRole(Role.MODERATOR.name());
-			userAccount.addRole(Role.ADMINISTRATOR.name());
+			UserAccount userAccount = new UserAccount("admin", "", "", "admin@example.com", password);
+			userAccount.addRole(Role.ADMINISTRATOR.name()); // Добавляем роль администратора
 			userAccountRepository.save(userAccount);
 		}
-
 	}
 
 }

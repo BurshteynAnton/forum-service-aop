@@ -12,7 +12,7 @@
 	<groupId>telran.java53</groupId>
 	<artifactId>forum-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>forum-service</name>
+	<name>antonburshteyn-service</name>
 	<description>Forum web service</description>
 	<url />
 	<licenses>

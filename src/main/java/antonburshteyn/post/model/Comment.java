@@ -12,7 +12,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @EqualsAndHashCode(of = {"id", "user", "dateCreated"})
 @Entity
-@Table(name = "comment")
+@Table(name = "comments")
 public class Comment {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

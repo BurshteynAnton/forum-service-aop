@@ -2,10 +2,7 @@ package antonburshteyn.accounting.controller;
 
 import java.security.Principal;
 
-import antonburshteyn.accounting.dto.RolesDto;
-import antonburshteyn.accounting.dto.UserDto;
-import antonburshteyn.accounting.dto.UserEditDto;
-import antonburshteyn.accounting.dto.UserRegisterDto;
+import antonburshteyn.accounting.dto.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,6 +28,7 @@ public class UserAccountController {
 	public UserDto register(@RequestBody UserRegisterDto userRegisterDto) {
 		return userAccountService.register(userRegisterDto);
 	}
+
 
 	@PostMapping("/login")
 	public UserDto login(Principal principal) {
@@ -64,7 +62,14 @@ public class UserAccountController {
 
 	@PutMapping("/password")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void changePassword(Principal principal, @RequestHeader("X-Password") String newPassword) {
-		userAccountService.changePassword(principal.getName(), newPassword);
+	public void changePassword(Principal principal, @RequestBody PasswordChangeDto passwordChangeDto) {
+		userAccountService.changePassword(principal.getName(), passwordChangeDto.getCurrentPassword(), passwordChangeDto.getNewPassword());
 	}
+
+//	@PutMapping("/password")
+//	@ResponseStatus(HttpStatus.NO_CONTENT)
+//	public void changePassword(Principal principal, @RequestHeader("X-Password") String newPassword) {
+//		userAccountService.changePassword(principal.getName(), newPassword);
+//	}
 }
+

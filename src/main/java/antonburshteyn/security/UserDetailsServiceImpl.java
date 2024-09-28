@@ -20,13 +20,38 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		UserAccount userAccount = repository.findById(username)
+		UserAccount userAccount = repository.findByLogin(username)
 				.orElseThrow(() -> new UsernameNotFoundException(username));
-		Collection<String> authorities = userAccount.getRoles()
-												.stream()
-												.map(r -> "ROLE_" + r.name())
-												.toList();
-		return new User(username, userAccount.getPassword(), AuthorityUtils.createAuthorityList(authorities));
-	}
 
+		Collection<String> authorities = userAccount.getRoles()
+				.stream()
+				.map(r -> "ROLE_" + r.name())
+				.toList();
+
+		return new User(
+				userAccount.getLogin(),
+				userAccount.getPassword(),
+				userAccount.getEnabled(),
+				true,
+				true,
+				!userAccount.getLocked(),
+				AuthorityUtils.createAuthorityList(authorities)
+		);
+	}
 }
+
+//public class UserDetailsServiceImpl implements UserDetailsService {
+//	final UserAccountRepository repository;
+//
+//	@Override
+//	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+//		UserAccount userAccount = repository.findByLogin(username)
+//				.orElseThrow(() -> new UsernameNotFoundException(username));
+//		Collection<String> authorities = userAccount.getRoles()
+//												.stream()
+//												.map(r -> "ROLE_" + r.name())
+//												.toList();
+//		return new User(username, userAccount.getPassword(), AuthorityUtils.createAuthorityList(authorities));
+//	}
+//
+//}

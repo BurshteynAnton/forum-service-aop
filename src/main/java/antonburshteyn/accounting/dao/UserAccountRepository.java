@@ -28,4 +28,8 @@ public interface UserAccountRepository extends JpaRepository<UserAccount, String
     @Query("UPDATE UserAccount u SET u.roles = :roles WHERE :role NOT MEMBER OF u.roles")
     void addRoleToAllUsersIfNotExists(@Param("role") Role role, @Param("roles") Set<Role> roles);
 
+    boolean existsByLogin(String login);
+
+    Optional<UserAccount> findByLogin(String login);
+
 }

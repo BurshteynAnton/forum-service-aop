@@ -59,7 +59,6 @@ public class PostController {
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void addLike(@PathVariable String id) {
 		postService.addLike(id);
-
 	}
 
 	@GetMapping("/posts/author/{author}")

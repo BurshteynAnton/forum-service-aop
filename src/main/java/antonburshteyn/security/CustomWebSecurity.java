@@ -16,5 +16,4 @@ public class CustomWebSecurity {
 		Post post = repository.findById(postId).orElse(null);
 		return post != null && post.getAuthor().equalsIgnoreCase(userName);
 	}
-
 }

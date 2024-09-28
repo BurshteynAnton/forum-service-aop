@@ -6,6 +6,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authorization.AuthorizationDecision;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.expression.WebExpressionAuthorizationManager;
 
@@ -14,6 +15,7 @@ import antonburshteyn.accounting.model.Role;
 
 @Configuration
 @RequiredArgsConstructor
+@EnableWebSecurity(debug = true)
 public class SecurityConfiguration {
 	
 	final CustomWebSecurity webSecurity;
@@ -24,7 +26,7 @@ public class SecurityConfiguration {
 		http.csrf(csrf -> csrf.disable());
 //		http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.ALWAYS));
 		http.authorizeHttpRequests(authorize -> authorize
-				.requestMatchers("/account/register", "/antonburshteyn/posts/**")
+				.requestMatchers("/account/register", "/forum/posts/**")
 					.permitAll()
 				.requestMatchers("/account/user/{login}/role/{role}")
 					.hasRole(Role.ADMINISTRATOR.name())
@@ -32,11 +34,11 @@ public class SecurityConfiguration {
 					.access(new WebExpressionAuthorizationManager("#login == authentication.name"))
 				.requestMatchers(HttpMethod.DELETE, "/account/user/{login}")
 					.access(new WebExpressionAuthorizationManager("#login == authentication.name or hasRole('ADMINISTRATOR')"))
-				.requestMatchers(HttpMethod.POST, "/antonburshteyn/post/{author}")
+				.requestMatchers(HttpMethod.POST, "/forum/post/{author}")
 					.access(new WebExpressionAuthorizationManager("#author == authentication.name"))
-				.requestMatchers(HttpMethod.PUT, "/antonburshteyn/post/{id}")
+				.requestMatchers(HttpMethod.PUT, "/forum/post/{id}")
 					.access((authentication, context) -> new AuthorizationDecision(webSecurity.checkPostAuthor(context.getVariables().get("id"), authentication.get().getName())))
-				.requestMatchers(HttpMethod.DELETE, "/antonburshteyn/post/{id}")
+				.requestMatchers(HttpMethod.DELETE, "/forum/post/{id}")
 					.access((authentication, context) -> {
 						boolean checkAuthor = webSecurity.checkPostAuthor(context.getVariables().get("id"), authentication.get().getName());
 						boolean checkModerator = context.getRequest().isUserInRole(Role.MODERATOR.name());

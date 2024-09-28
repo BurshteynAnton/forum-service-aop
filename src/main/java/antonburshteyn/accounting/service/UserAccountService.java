@@ -16,5 +16,5 @@ public interface UserAccountService {
 
 	RolesDto changeRolesList(String login, String role, boolean isAddRoles);
 
-	void changePassword(String login, String newPassword);
+	void changePassword(String username, String currentPassword, String newPassword);
 }

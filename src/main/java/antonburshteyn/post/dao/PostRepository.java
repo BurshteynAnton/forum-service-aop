@@ -15,6 +15,4 @@ public interface PostRepository extends JpaRepository<Post, String> {
 
 	Stream<Post> findByDateCreatedBetween(LocalDate from, LocalDate to);
 
-
-
 }

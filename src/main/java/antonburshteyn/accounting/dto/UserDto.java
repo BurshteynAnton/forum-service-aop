@@ -13,9 +13,20 @@ import lombok.Singular;
 @NoArgsConstructor
 @Builder
 public class UserDto {
-	String login;
-    String firstName;
-    String lastName;
+    private String login;
+    private String firstname;
+    private String lastName;
+    private String bio; // Описание профиля
+    private String profilePictureUrl; // URL аватара
+    private Integer  posts; // Количество постов
+    private Integer  followers;
+    private Integer  following;
     @Singular
-    Set<String> roles;
+    private Set<String> roles;
 }
+    //	String login;
+//    String firstName;
+//    String lastName;
+//    @Singular
+//    Set<String> roles;
+

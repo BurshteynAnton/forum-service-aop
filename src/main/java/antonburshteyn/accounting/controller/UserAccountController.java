@@ -19,16 +19,15 @@ import lombok.RequiredArgsConstructor;
 import antonburshteyn.accounting.service.UserAccountService;
 
 @RestController
-@RequestMapping("/account")
 @RequiredArgsConstructor
+@RequestMapping("/account")
 public class UserAccountController {
 	final UserAccountService userAccountService;
 
-	@PostMapping("/register")
+	@PostMapping("/users/register")
 	public UserDto register(@RequestBody UserRegisterDto userRegisterDto) {
 		return userAccountService.register(userRegisterDto);
 	}
-
 
 	@PostMapping("/login")
 	public UserDto login(Principal principal) {

@@ -35,6 +35,12 @@ public class UserAccount implements UserDetails {
 	private String login;
 	private String firstName;
 	private String lastName;
+	private String bio;
+	private String profilePictureUrl;
+
+	private Integer posts = 0;
+	private Integer followers = 0;
+	private Integer following = 0;
 	private String email;
 	private String password;
 
